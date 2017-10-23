@@ -1,6 +1,8 @@
 // SortedDriver.cpp
 
 // tom bailey   1445  25 mar 2014
+// Edited by McKade Umbenhower
+// Date: October 23, 2017
 // Construct sorted sequences and call functions that 
 //   process the sorted sequences.
 
@@ -63,8 +65,35 @@ getWords(size_t numWords, size_t wordLength, string alphabet)
 double
 mostIsolated(vector<double> & number)
 {
-	// STUB  STUB  STUB
-	return -123.456;
+	// Set the initial case to the first index's information
+	double currentMostIsolated = number.at(0);
+	double dist = std::abs(number.at(0) - number.at(1));
+	double prevDist = dist;
+
+	
+
+	// Check all the middle indices
+	for (int i = 1; i < number.size() - 1; i++)
+	{
+		double nextDist = std::abs(number.at(i) - number.at(i + 1));
+		double closestNeighborDist = std::min<double>(prevDist, nextDist);
+		if (closestNeighborDist > dist)
+		{
+			dist = closestNeighborDist;
+			currentMostIsolated = number.at(i);
+		}
+		prevDist = nextDist;
+	}
+
+	// Check the last index's information
+	double closestNeighborDist = std::abs(number.at(number.size() - 1) - number.at(number.size() - 2));
+	if (closestNeighborDist > dist)
+	{
+		dist = closestNeighborDist;
+		currentMostIsolated = number.at(number.size() - 1);
+	}
+
+	return currentMostIsolated;
 }
 
 
@@ -74,8 +103,25 @@ mostIsolated(vector<double> & number)
 int
 unmatched(list<string> & A, list<string> & B)
 {
-	// STUB  STUB  STUB
-	return -1;
+	int count = 0;
+	std::list<string>::const_iterator iterA;
+	std::list<string>::const_iterator iterB = B.begin();
+	for (iterA = A.begin(); iterA != A.end(); iterA++)
+	{
+		// Cycle through B until the A element is not after the B element alphabetically 
+		while ((*iterA > *iterB) && iterB != B.end())
+		{
+			iterB++;
+		}
+		
+		// If the two strings are not equal, add one to the count
+		if (*iterA != *iterB)
+		{
+			count++;
+		}
+	}
+
+	return count;
 }
 
 
